@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Opener Test</title>
+    <script>
+        // Wait for page to load
+        window.onload = function() {
+            // Check if window.opener exists
+            if (window.opener) {
+                document.getElementById('result').innerText = "window.opener exists! Vulnerability confirmed.";
+                
+                // Display opener info (don't actually redirect in testing)
+                document.getElementById('openerInfo').innerText = 
+                    "opener URL: " + window.opener.location.href + 
+                    "\nCould redirect the parent window if this were malicious.";
+                
+                // Uncomment to test actual redirection (use with caution)
+                window.opener.location = "https://example.com/";
+            } else {
+                document.getElementById('result').innerText = "window.opener is null. The site is protected.";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Window Opener Test</h1>
+    <div id="result">Checking...</div>
+    <pre id="openerInfo"></pre>
+</body>
+</html>
