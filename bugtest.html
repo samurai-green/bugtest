@@ -10,12 +10,13 @@
                 document.getElementById('result').innerText = "window.opener exists! Vulnerability confirmed.";
                 
                 // Display opener info (don't actually redirect in testing)
-                document.getElementById('openerInfo').innerText = 
-                    "opener URL: " + window.opener.location.href + 
-                    "\nCould redirect the parent window if this were malicious.";
+                //document.getElementById('openerInfo').innerText = 
+                  //  "opener URL: " + window.opener.location.href + 
+                  //  "\nCould redirect the parent window if this were malicious.";
                 
                 // Uncomment to test actual redirection (use with caution)
-                window.opener.location = "https://example.com/";
+                //window.opener.location = "https://example.com/";
+                window.opener.location.assign("https://youtube.com");
             } else {
                 document.getElementById('result').innerText = "window.opener is null. The site is protected.";
             }
